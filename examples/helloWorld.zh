@@ -1,3 +1,1 @@
-str = "Hello, World!";
-
-writef(str);
+writeln("Hello, World!");
