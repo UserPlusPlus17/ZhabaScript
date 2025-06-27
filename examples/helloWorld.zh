@@ -1,2 +1,1 @@
-sum = "5";
-writef("Hello %s%s\n" ~ sum ~ "e");
+writeln(33 + 33);

@@ -71,6 +71,7 @@ private:
                 break;
                 
             case TokenType.VARIABLE:
+            case TokenType.VAR:
                 parseVar();
                 break;
                 
@@ -176,6 +177,7 @@ private:
 
     void parseVar()
     {
+        consume(TokenType.VAR);
         string name = consume(TokenType.VARIABLE).value;
         consume(TokenType.ASSIGNMENT);
         string value = parseExpr();

@@ -15,6 +15,7 @@ enum TokenType
     WRITELN,
     WRITEF,
     IMPORT,
+    VAR,
     LITERAL_STRING,
     LITERAL_NUMBER,
     VARIABLE,
@@ -55,7 +56,7 @@ private:
     size_t line;
     size_t column;
 
-    immutable string[] keywords = ["write", "writeln", "writef"];
+    immutable string[] keywords = ["write", "writeln", "writef", "var"];
     
     bool isKeyword(string ident)
     {
@@ -232,6 +233,7 @@ private:
         if (ident == "writeln") return new Token(TokenType.WRITELN, ident, startLine, startColumn);
         if (ident == "writef") return new Token(TokenType.WRITEF, ident, startLine, startColumn);
         if (ident == "import") return new Token(TokenType.IMPORT, ident, startLine, startColumn);     
+        if (ident == "var") return new Token(TokenType.VAR, ident, startLine, startColumn);         
 
         return new Token(TokenType.VARIABLE, ident, startLine, startColumn);
     }
