@@ -14,6 +14,8 @@ enum TokenType
     WRITE,
     WRITELN,
     WRITEF,
+    IF,
+    ELSE,
     IMPORT,
     VAR,
     LITERAL_STRING,
@@ -24,6 +26,14 @@ enum TokenType
     MINUS,
     MULTIPLY,
     DIVIDE,
+    GREATER,
+    LESS,
+    LESS_EQUAL,
+    GREATER_EQUAL,
+    NOT_EQUAL,
+    EQUALS,
+    LBRACE,
+    RBRACE,
     LPAREN,
     RPAREN,
     COMMA,
@@ -56,7 +66,7 @@ private:
     size_t line;
     size_t column;
 
-    immutable string[] keywords = ["write", "writeln", "writef", "var"];
+    immutable string[] keywords = ["write", "writeln", "writef", "var", "if", "else"];
     
     bool isKeyword(string ident)
     {
@@ -233,7 +243,9 @@ private:
         if (ident == "writeln") return new Token(TokenType.WRITELN, ident, startLine, startColumn);
         if (ident == "writef") return new Token(TokenType.WRITEF, ident, startLine, startColumn);
         if (ident == "import") return new Token(TokenType.IMPORT, ident, startLine, startColumn);     
-        if (ident == "var") return new Token(TokenType.VAR, ident, startLine, startColumn);         
+        if (ident == "var") return new Token(TokenType.VAR, ident, startLine, startColumn);      
+        if (ident == "if") return new Token(TokenType.IF, ident, startLine, startColumn);  
+        if (ident == "else") return new Token(TokenType.ELSE, ident, startLine, startColumn);                  
 
         return new Token(TokenType.VARIABLE, ident, startLine, startColumn);
     }
@@ -248,7 +260,29 @@ private:
         {
             case '=':
                 advance();
-                return new Token(TokenType.ASSIGNMENT, "=", startLine, startColumn);
+                if(pos < input.length && input[pos] == '=')
+                {
+                    advance();
+                    return new Token(TokenType.EQUALS, "==", startLine, startColumn);
+                }
+
+                else
+                {
+                    return new Token(TokenType.ASSIGNMENT, "=", startLine, startColumn);
+                }
+
+            case '!':
+                advance();
+                if(pos < input.length && input[pos] == '=')
+                {
+                    advance();
+                    return new Token(TokenType.EQUALS, "!=", startLine, startColumn);
+                }
+
+                else
+                {
+                    throw new Exception("Unexpected character '!'");
+                }
 
             case '+':
                 advance();
@@ -285,6 +319,40 @@ private:
             case '~':
                 advance();
                 return new Token(TokenType.TILDE, "~", startLine, startColumn);
+
+            case '{':
+                advance();
+                return new Token(TokenType.LBRACE, "{", startLine, startColumn);
+
+            case '}':
+                advance();
+                return new Token(TokenType.RBRACE, "}", startLine, startColumn);
+
+            case '>':
+                advance();
+                if(pos < input.length && input[pos] == '=')
+                {
+                    advance();
+                    return new Token(TokenType.GREATER_EQUAL, ">=", startLine, startColumn);
+                }
+
+                else
+                {
+                    return new Token(TokenType.GREATER, ">", startLine, startColumn);
+                }
+
+            case '<':
+                advance();
+                if(pos < input.length && input[pos] == '=')
+                {   
+                    advance();
+                    return new Token(TokenType.LESS_EQUAL, "<=", startLine, startColumn);
+                }
+
+                else
+                {
+                    return new Token(TokenType.LESS, "<", startLine, startColumn);
+                }
 
             default:
                 return null;
