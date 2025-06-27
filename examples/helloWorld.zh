@@ -1,1 +1,2 @@
-writeln("Hello, World!");
+sum = "5";
+writef("Hello %s%s\n" ~ sum ~ "e");

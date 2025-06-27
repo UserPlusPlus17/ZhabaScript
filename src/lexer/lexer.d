@@ -26,6 +26,7 @@ enum TokenType
     LPAREN,
     RPAREN,
     COMMA,
+    TILDE,
     SEMICOLON,
     EOF
 }
@@ -278,6 +279,10 @@ private:
             case ';':
                 advance();
                 return new Token(TokenType.SEMICOLON, ";", startLine, startColumn);
+
+            case '~':
+                advance();
+                return new Token(TokenType.TILDE, "~", startLine, startColumn);
 
             default:
                 return null;
